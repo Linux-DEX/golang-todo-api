@@ -1,9 +1,23 @@
 package main
 
-import "fmt"
+import (
+	"net/http"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
-	fmt.Println("Todo API Server")
-	fmt.Println("Project setup complete!")
-	fmt.Println("Folder structure created")
+    var router *gin.Engine = gin.Default()
+
+    // Do not trust proxy headers (e.g. X-Forwarded-For); use the direct client connection IP.
+    router.SetTrustedProxies(nil)
+
+    router.GET("/", func(c *gin.Context) {
+        c.JSON(http.StatusOK, gin.H{
+            "message": "Todo API is running!",
+            "status": "Success",
+        })
+    })
+
+    router.Run(":8080")
 }
