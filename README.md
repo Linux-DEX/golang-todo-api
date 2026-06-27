@@ -73,7 +73,7 @@ migrate -path migrations -database "your_database_url" up
 Or using the PowerShell script:
 
 ```powershell
-.\scripts\migrate.ps1 up
+.\scripts\migrate.sh up
 ```
 
 ### 6. Start the Server
@@ -121,7 +121,7 @@ Go-Gin-Postgres-Todo-REST-API/
 │   ├── 000003_add_user_id_to_todos_table.up.sql
 │   └── 000003_add_user_id_to_todos_table.down.sql
 ├── scripts/
-│   └── migrate.ps1              # Migration helper script
+│   └── migrate.sh               # Migration helper script
 ├── .air.toml                    # Air configuration
 ├── .env                         # Environment variables (create this)
 ├── go.mod                       # Go module definition
