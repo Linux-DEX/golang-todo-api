@@ -2,30 +2,10 @@ package repository
 
 import (
 	"context"
-	"os"
 	"testing"
 
 	"todo_api/internal/models"
-
-	"github.com/jackc/pgx/v5/pgxpool"
 )
-
-var testPool *pgxpool.Pool
-
-func TestMain(m *testing.M) {
-	dbURL := "postgres://postgres:password@localhost:5432/todo_api"
-
-	var err error
-	testPool, err = pgxpool.New(context.Background(), dbURL)
-	if err != nil {
-		panic(err)
-	}
-
-	code := m.Run()
-
-	testPool.Close()
-	os.Exit(code)
-}
 
 func cleanDB(t *testing.T) {
 	t.Helper()
