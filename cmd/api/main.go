@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"todo_api/internal/config"
 	"todo_api/internal/database"
+	"todo_api/internal/handlers"
+	"todo_api/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -40,6 +42,22 @@ func main() {
 			"database": "Connected",
 		})
 	})
+
+	router.POST("/auth/register", handlers.CreateUserHandler(pool))
+	router.POST("/auth/login", handlers.LoginHandler(pool, cfg))
+
+	protected := router.Group("/todos")
+	protected.Use(middleware.AuthMiddleware(cfg))
+	{
+		protected.POST("", handlers.CreateTodoHandler(pool))
+		protected.GET("", handlers.GetAllTodosHandler(pool))
+		protected.GET("/:id", handlers.GetToDoByIDHandler(pool))
+		protected.PUT("/:id", handlers.UpdateToDoHandler(pool))
+		protected.DELETE("/:id", handlers.DeleteToDoHandler(pool))
+	}
+
+	// Middleware Test Route
+	router.GET("/protected-test", middleware.AuthMiddleware(cfg), handlers.TestProtectedHandler())
 
 	// start http server on port PORT
 	router.Run(":" + cfg.Port)
